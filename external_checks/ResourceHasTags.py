@@ -2,10 +2,11 @@ from checkov.common.models.enums import CheckCategories, CheckResult
 from checkov.terraform.checks.resource.base_resource_check import BaseResourceCheck
 
 
-class GenericTagExists(BaseResourceCheck):
+class ResourceHasTags(BaseResourceCheck):
     def __init__(self):
-        self.tag_name = 'Owner'
-        name = f"Ensure every taggable resource has an '{self.tag_name}' tag"
+        name = f"Ensure every taggable resource is tagged"
+        check_id = 'CKV_AWS_CUSTOM_1'
+        categories = [CheckCategories.CONVENTION]
         supported_resources = [
             'aws_acm_certificate',
             'aws_acmpca_certificate_authority',
@@ -270,24 +271,16 @@ class GenericTagExists(BaseResourceCheck):
             'aws_workspaces_directory',
             'aws_workspaces_workspace'
         ]
-        categories = [CheckCategories.CONVENTION]
-        super().__init__(name=name, id='CKV_AWS_997', categories=categories, supported_resources=supported_resources)
+        super().__init__(name=name, id=check_id, categories=categories, supported_resources=supported_resources)
 
     def scan_resource_conf(self, conf):
         if 'tags' in conf:
             tags = conf['tags']
-            if self.get_tag_value(tags):
-                return CheckResult.PASSED
+
+            # if the tags block is here, it will be an array containing one dict. It can be [{}], so check for that.
+            return CheckResult.FAILED if len(tags[0]) == 0 else CheckResult.PASSED
 
         return CheckResult.FAILED
 
-    def get_tag_value(self, tags):
-        for tag in tags:
-            for (tag_name, tag_value) in tag.items():
-                if self.tag_name == tag_name:
-                    return tag_value
 
-        return None
-
-
-check = GenericTagExists()
+check = ResourceHasTags()
