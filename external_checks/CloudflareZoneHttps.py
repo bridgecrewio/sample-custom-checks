@@ -11,8 +11,6 @@ class CloudflareZoneHttps(BaseResourceCheck):
         super().__init__(name=name, id=check_id, categories=categories, supported_resources=supported_resources)
 
     def scan_resource_conf(self, conf):
-        print(conf)
-
         settings = conf.get('settings')
         if settings and settings[0]:
             https = settings[0].get('always_use_https')
