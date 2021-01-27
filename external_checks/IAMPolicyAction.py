@@ -39,12 +39,4 @@ class IAMPolicyShouldNotUseAction(BaseResourceCheck):
 
         return CheckResult.PASSED
 
-    def get_tag_value(self, tag_name, tags):
-        for tag in tags:
-            for (name, value) in tag.items():
-                if name == tag_name:
-                    return value
-
-        return None
-
 check = IAMPolicyShouldNotUseAction()
