@@ -86,4 +86,5 @@ class SecurityGroupCidrRangeTooLarge(BaseResourceCheck):
 
         return CheckResult.PASSED if total_ips <= 256 else CheckResult.FAILED
 
-check = SecurityGroupCidrRangeTooLarge
+
+check = SecurityGroupCidrRangeTooLarge()
