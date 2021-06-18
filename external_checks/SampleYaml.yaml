@@ -1,0 +1,12 @@
+metadata:
+  id: "CKV2_CUSTOM_999"
+  name: "Test"
+  category: "NETWORKING"
+definition:
+  and:
+    - cond_type: attribute
+      attribute: bucket
+      operator: equals
+      value: "abc"
+      resource_types:
+        - aws_s3_bucket
